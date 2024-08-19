@@ -135,13 +135,13 @@ class Cube(Figure):
 
     def __init__(self, rgb: tuple, *sides):
         if len(sides) == 1:
-            self.__sides = [*sides] * 12  # список из 12 одинаковы сторон (передаётся 1 сторона)
+            s = [*sides] * 12  # список из 12 одинаковы сторон (передаётся 1 сторона)
         elif len(sides) == 12:
-            self.__sides = sides
+            s = sides
         else:
-            self.__sides = [1] * 12
-        super().__init__(rgb, self.__sides)
-        self.__sides = self.get_sides()  # после проверок в родительском классе присваеваем эти значения
+            s = [1] * 12
+        super().__init__(rgb, s)
+        self.__sides = self.get_sides()
 
     def get_volume(self):
         """
