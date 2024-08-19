@@ -141,6 +141,7 @@ class Cube(Figure):
         else:
             self.__sides = [1] * 12
         super().__init__(rgb, self.__sides)
+        self.__sides = self.get_sides()  # после проверок в родительском классе присваеваем эти значения
 
     def get_volume(self):
         """
