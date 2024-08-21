@@ -25,7 +25,7 @@ print('Команда {} решила задач: {} !'.format(team_name2, score
 print('{1} решили задачи за {0} с !'.format(team2_time, team_name2))
 
 print(f'Команды решили {score_1} и {score_2} задач.')
-print(f'Результат битвы: {challenge_result}!')
+print(f'Результат битвы: {challenge_result}')
 print(f'Сегодня было решено {tasks_total} задач, в среднем по {time_avg} секунды на задачу!')
 
 
