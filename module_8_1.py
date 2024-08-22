@@ -7,6 +7,7 @@ def add_everything_up(a, b):
     """
     try:
         return round((a + b), 5)  # округление, иначе слишком много знаком после запятой иногда
+                                  # если оба значения будут строкой, то возникнет TypeError
     except TypeError:
         if isinstance(a, str):
             return a + str(b)
@@ -18,3 +19,4 @@ if __name__ == "__main__":
     print(add_everything_up(123.456, 'строка'))
     print(add_everything_up('яблоко', 4215))
     print(add_everything_up(123.456, 7))
+    print(add_everything_up('Urban', '-university'))
