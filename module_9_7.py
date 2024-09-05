@@ -6,8 +6,8 @@ def is_prime(func):
     :return: function
     """
 
-    def wrapper(*args):
-        number = func(*args)
+    def wrapper(*args, **kwargs):
+        number = func(*args, **kwargs)
 
         d = 2
         while d * d <= number and number % d != 0:
