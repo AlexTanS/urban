@@ -12,18 +12,20 @@ class Bank:
         for _ in range(100):
             if self.balance >= 500 and self.lock.locked():
                 self.lock.release()
-            rand_int = randint(50, 500)
-            self.balance += rand_int
-            print(f"Пополнение: {rand_int}. Баланс: {self.balance}")
+            rand_depo = randint(50, 500)
+            self.balance += rand_depo
+            print(f"Пополнение: {rand_depo}. Баланс: {self.balance}")
             sleep(0.001)
 
     def take(self):
-        for _ in range(100):
-            rand_int = randint(50, 500)
-            print(f"Запрос на {rand_int}")
-            if rand_int <= self.balance:
-                self.balance -= rand_int
-                print(f"Снятие: {rand_int}. Баланс: {self.balance}")
+        j = 0
+        while j < 100:
+            rand_take = randint(50, 500)
+            print(f"Запрос на {rand_take}")
+            if rand_take <= self.balance:
+                self.balance -= rand_take
+                print(f"Снятие: {rand_take}. Баланс: {self.balance}")
+                j += 1  # в задании написано, что 100 операций "снятия", поэтому счетчик увеличиваю здесь
             else:
                 print("Запрос отклонён, недостаточно средств")
                 self.lock.acquire()
