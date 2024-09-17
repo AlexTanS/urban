@@ -13,10 +13,10 @@ class Table:
         self.number = number
         self.guest = guest
 
-    def __bool__(self):  # для проверки "занятости" стола
+    def __bool__(self):             # для проверки "занятости" стола
         if self.guest is None:
-            return True  # если стол "свободен"
-        return False  # если стол "занят"
+            return True             # если стол "свободен"
+        return False                # если стол "занят"
 
 
 class Guest(Thread):
@@ -43,36 +43,36 @@ class Cafe:
         :param guests: неограниченное количество гостей класса Guest
         """
         guests_list = list(guests)
-        for i in range(len(guests_list)):  # цикл по количеству гостей
-            for table in self.tables:  # пробегаемся по столам
-                if table:  # если стол "свободен"
-                    table.guest = guests_list.pop(i)  # сажаем за стол гостя
-                    table.guest.start()  # запускаем поток гостя
+        for i in range(len(guests_list)):                                   # цикл по количеству гостей
+            for table in self.tables:                                       # пробегаемся по столам
+                if table:                                                   # если стол "свободен"
+                    table.guest = guests_list.pop(i)                        # сажаем за стол гостя
+                    table.guest.start()                                     # запускаем поток гостя
                     print("%s сел(-а) за стол номер %d" % (table.guest.name, table.number))
-                    break  # идем за следующим гостем
-        for guest in guests_list:  # оставшихся гостей - в очередь
+                    break                                                   # идем за следующим гостем
+        for guest in guests_list:                                           # оставшихся гостей - в очередь
             self.queue.put(guest)
             print("%s в очереди" % guest.name)
 
     def discuss_guests(self):
         """Метод имитирует процесс обслуживания гостей."""
         while True:
-            is_empty_all_tables = True  # True если все столы пусты
-            for table in self.tables:  # пробегаемся по столам
-                if not table:  # если стол "занят"
-                    is_empty_all_tables = False  # есть занятые столы
-                    break
+            is_empty_all_tables = True                                      # True если все столы пусты
+            for table in self.tables:                                       # пробегаемся по столам
+                if not table:                                               # если стол "занят"
+                    is_empty_all_tables = False                             # есть занятые столы
+                    break                                   
             if self.queue.empty() and is_empty_all_tables:  # если очередь пуста и столы свободны => конец функции
                 break
             else:
-                for i in range(len(self.tables)):  # цикл по столам
-                    if not self.tables[i]:  # если стол "занят", НЕ "свободен"
+                for i in range(len(self.tables)):                           # цикл по столам
+                    if not self.tables[i]:                                  # если стол "занят", НЕ "свободен"
                         if not self.tables[i].guest.is_alive():  # если гость закончил "прием пищи"(поток закончил)
                             print("%s покушал(-а) и ушёл(ушла)" % self.tables[i].guest.name)
-                            self.tables[i].guest = None  # освобождаем стол
+                            self.tables[i].guest = None                     # освобождаем стол
                             print("Стол номер %d свободен" % self.tables[i].number)
-                            if not self.queue.empty():  # если очередь не пуста
-                                self.tables[i].guest = self.queue.get()  # убираем из очереди и садим за стол
+                            if not self.queue.empty():                      # если очередь не пуста
+                                self.tables[i].guest = self.queue.get()     # убираем из очереди и садим за стол
 
                                 print("%s вышел(-ла) из очереди и сел(-а) за стол номер %d" % (
                                     self.tables[i].guest.name, self.tables[i].number))
