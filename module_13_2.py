@@ -1,8 +1,10 @@
 from aiogram import Bot, Dispatcher, executor
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+import asyncio
 
 token = ""
 bot = Bot(token=token)
-dp = Dispatcher(bot)
+dp = Dispatcher(bot, storage=MemoryStorage())
 
 
 @dp.message_handler(commands=["start"])
