@@ -7,7 +7,7 @@ from crud_functions import *
 
 all_products = get_all_products()  # получаю все записи из БД
 
-token = "8080868771:AAHbdKA1mZJrgSBsSaHjVzW17riunpnX76Q"
+token = ""
 bot = Bot(token=token)
 dp = Dispatcher(bot, storage=MemoryStorage())
 kb = ReplyKeyboardMarkup(
