@@ -14,7 +14,7 @@ async def admin() -> str:
 
 
 @app.get("/user/{user_id}")
-async def user_id(user_id: int) -> str:
+async def user_iden(user_id: int) -> str:
     return f"Вы вошли как пользователь № {user_id}"
 
 
