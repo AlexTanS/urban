@@ -1,0 +1,19 @@
+Запуск сервера uvicorn
+python -m uvicorn app.main:app
+
+Инициализация alembic
+alembic init app/migrations
+
+Изменяем парметры в файлах
+alembic.ini:
+sqlalchemy.url = sqlite:///taskmanager.db
+
+env.py:
+from app.backend.db import Base
+from app.models.user import User
+from app.models.task import Task
+target_metadata = Base.metadata
+
+Команда на выполнение миграции
+alembic revision --autogenerate -m "initial migrations"
+alembic upgrade head
