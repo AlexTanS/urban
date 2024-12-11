@@ -34,7 +34,7 @@ async def user_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
     :param user_id: id пользователя
     :return: Запись из БД о пользователе
     """
-    user = db.scalars(select(User).where(User.id == user_id))  # получение записи о пользователе
+    user = db.scalar(select(User).where(User.id == user_id))  # получение записи о пользователе
     if user is None:  # если пользователя с таким user_id не существует
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -51,9 +51,11 @@ async def create_user(db: Annotated[Session, Depends(get_db)], new_user: CreateU
     :param new_user: данные о новом пользователе согласно полям schemas.CreateUser
     :return: Словарь с сообщением об удачном/неудачном добавлении пользователя
     """
-    # проверка на существование пользователя с входящими данными по полям [username, firstname, lastname]
-    old_user = db.scalars(select(User).where(
-        User.username == new_user.username and User.firstname == new_user.firstname and User.lastname == new_user.lastname))
+    # проверка на существование пользователя с входящими данными по полям username
+    old_user = db.scalar(select(User).where(User.username == new_user.username))
+    print("===>", old_user)
+    print("User.username =>", User.username.name, "new_user.username =>", new_user.username)
+    print("="*50)
     if old_user is None:  # если пользователя такого нет, то создаем новую запись с новым пользователем
         db.execute(insert(User).values(
             username=new_user.username,
@@ -80,7 +82,7 @@ async def update_user(db: Annotated[Session, Depends(get_db)], user: UpdateUser,
     :param user_id: id пользователя
     :return: Словарь об успешном изменении записи / Исключение, если запись о пользователе не найдена
     """
-    old_user = db.scalars(select(User).where(User.id == user_id))  # получение записи нужного пользователя
+    old_user = db.scalar(select(User).where(User.id == user_id))  # получение записи нужного пользователя
     if old_user is None:  # если пользователь не найден, то генерирую исключение
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -104,7 +106,7 @@ async def delete_user(db: Annotated[Session, Depends(get_db)], user_id: int):
     :param user_id: id пользователя
     :return: Словарь об успешном удалении записи / Исключение, если запись о пользователе не найдена
     """
-    user = db.scalars(select(User).where(User.id == user_id))
+    user = db.scalar(select(User).where(User.id == user_id))
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
