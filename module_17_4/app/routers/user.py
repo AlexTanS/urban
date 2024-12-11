@@ -52,10 +52,7 @@ async def create_user(db: Annotated[Session, Depends(get_db)], new_user: CreateU
     :return: Словарь с сообщением об удачном/неудачном добавлении пользователя
     """
     # проверка на существование пользователя с входящими данными по полям username
-    old_user = db.scalar(select(User).where(User.username == new_user.username))
-    print("===>", old_user)
-    print("User.username =>", User.username.name, "new_user.username =>", new_user.username)
-    print("="*50)
+    old_user = db.scalar(select(User).where(User.username == new_user.username))    
     if old_user is None:  # если пользователя такого нет, то создаем новую запись с новым пользователем
         db.execute(insert(User).values(
             username=new_user.username,
