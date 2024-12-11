@@ -51,36 +51,24 @@ async def create_user(db: Annotated[Session, Depends(get_db)], new_user: CreateU
     :param new_user: данные о новом пользователе согласно полям schemas.CreateUser
     :return: Словарь с сообщением об удачном/неудачном добавлении пользователя
     """
-
-    db.execute(insert(User).values(
-        username=new_user.username,
-        firstname=new_user.firstname,
-        lastname=new_user.lastname,
-        age=new_user.age,
-        slug=slugify(new_user.username)
-    ))
-    db.commit()
-    return {'status_code': status.HTTP_201_CREATED, 'transaction': 'Successful'}
-
-    #
-    # # проверка на существование пользователя с входящими данными по полям [username, firstname, lastname]
-    # old_user = db.scalars(select(User).where(
-    #     User.username == new_user.username and User.firstname == new_user.firstname and User.lastname == new_user.lastname))
-    # if old_user is None:  # если пользователя такого нет, то создаем новую запись с новым пользователем
-    #     db.execute(insert(User).values(
-    #         username=new_user.username,
-    #         firstname=new_user.firstname,
-    #         lastname=new_user.lastname,
-    #         age=new_user.age,
-    #         slug=slugify(new_user.username)
-    #     ))
-    #     db.commit()
-    #     return {'status_code': status.HTTP_201_CREATED, 'transaction': 'Successful'}
-    # else:  # Ответ в случае попытки создания дубликата пользователя
-    #     raise HTTPException(
-    #         status_code=status.HTTP_409_CONFLICT,
-    #         detail="Such a user already exists"
-    #     )
+    # проверка на существование пользователя с входящими данными по полям [username, firstname, lastname]
+    old_user = db.scalars(select(User).where(
+        User.username == new_user.username and User.firstname == new_user.firstname and User.lastname == new_user.lastname))
+    if old_user is None:  # если пользователя такого нет, то создаем новую запись с новым пользователем
+        db.execute(insert(User).values(
+            username=new_user.username,
+            firstname=new_user.firstname,
+            lastname=new_user.lastname,
+            age=new_user.age,
+            slug=slugify(new_user.username)
+        ))
+        db.commit()
+        return {'status_code': status.HTTP_201_CREATED, 'transaction': 'Successful'}
+    else:  # Ответ в случае попытки создания дубликата пользователя
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Such a user already exists"
+        )
 
 
 @router.put("/update")
